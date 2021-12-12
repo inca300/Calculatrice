@@ -35,3 +35,18 @@ class Pile :
         for i in range(len(self.lst)):
             self.str =   str(self.str) + str('|') + str(self.lst[-1-i]) + str('|') + str('\n')
         return str(self.str)
+
+#-------------Ajoute de méthode-----------------#
+    def hauteur(self):
+        Q = Pile()
+        n = 0
+        while not(self.est_vide()):
+            n += 1
+            x = self.depiler()
+            Q.empiler(x)
+        while not(Q.est_vide()):
+            x = Q.depiler()
+            self.empiler(x)
+        return n
+
+

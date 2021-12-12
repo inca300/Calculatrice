@@ -15,7 +15,7 @@ def evalpostfixee(exp):
     tabsign = ['x', '-', '+', '/']
     for i in exp:
         if i in tabsign :#si le signe est dans le tableau
-            assert(pile.est_vide() == False),messagebox.showerror ( title = "Erreur" , message = "Votre opération n'est pas formulé correctement\nERREUR !" )
+            assert(pile.est_vide() == False),"Votre opération n'est pas formulé correctement\nERREUR !" 
             nb1 = pile.sommet()
             pile.depiler()
             nb2 = pile.sommet()
@@ -39,30 +39,28 @@ def evalpostfixee(exp):
 #-------------------CREATION DE LA FENETRE -------------------------------#
 
 fenetre = Tk()
-fenetre.geometry("300x400")
 fenetre.configure(bg = ('black'))
 
 #-----------------------CREATION DE LA BARRE D'AFFICHAGE-------------------------#
 
-affi = ""               #variable qui sert à l'affichage dans la barre d'affichage
 barre = StringVar()
 barre.set("0")
 reglagebarre = Entry(bg = 'black', fg = 'yellow' , bd = 3,font = ('arial', 15,'bold') , textvariable = barre, selectborderwidth = 1, insertwidth = 1, justify = 'right').grid(columnspan = 5, row = 0, rowspan = 2) #reglage de la barre d'affichage des calculs
 
 #--------------------BOUTON CHIFFRE--------------------#
 
-bouton7 = Button(fenetre, text ='7', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "7")).grid(column = 0, row = 3)
-bouton4 = Button(fenetre, text ='4', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "4")).grid(column = 0, row = 4)
-bouton1 = Button(fenetre, text ='1', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "1")).grid(column = 0, row = 5)
-bouton0 = Button(fenetre, text ='0', padx = 51, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "0")).grid(column = 0, row = 6, columnspan = 2)
+bouton7 = Button(fenetre, text ='7', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton( "7")).grid(column = 0, row = 3)
+bouton4 = Button(fenetre, text ='4', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton( "4")).grid(column = 0, row = 4)
+bouton1 = Button(fenetre, text ='1', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton( "1")).grid(column = 0, row = 5)
+bouton0 = Button(fenetre, text ='0', padx = 51, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton( "0")).grid(column = 0, row = 6, columnspan = 2)
 
-bouton8 = Button(fenetre, text ='8', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "8")).grid(column = 1, row = 3)
-bouton5 = Button(fenetre, text ='5', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "5")).grid(column = 1, row = 4)
-bouton2 = Button(fenetre, text ='2', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "2")).grid(column = 1, row = 5)
+bouton8 = Button(fenetre, text ='8', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton( "8")).grid(column = 1, row = 3)
+bouton5 = Button(fenetre, text ='5', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton( "5")).grid(column = 1, row = 4)
+bouton2 = Button(fenetre, text ='2', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton( "2")).grid(column = 1, row = 5)
 
-bouton9 = Button(fenetre, text ='9', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "9")).grid(column = 2, row = 3)
-bouton6 = Button(fenetre, text ='6', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "6")).grid(column = 2, row = 4)
-bouton3 = Button(fenetre, text ='3', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "3")).grid(column = 2, row = 5)
+bouton9 = Button(fenetre, text ='9', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton( "9")).grid(column = 2, row = 3)
+bouton6 = Button(fenetre, text ='6', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton( "6")).grid(column = 2, row = 4)
+bouton3 = Button(fenetre, text ='3', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton( "3")).grid(column = 2, row = 5)
 
 #-------------------BOUTON SIGNE-----------------------#
 
@@ -70,17 +68,17 @@ bouton3 = Button(fenetre, text ='3', padx = 20, pady = 20, bg = '#312C2C', fg = 
 lancer une command en appuyant sur le bouton et le lambda sert a ne pas lancer la fonction des le lancement du programme,
  le .grid sert à situer le bouton sur des colones et des ligne(row) pour préciser columnspan et rowpsan sert a fusionner les cases"""
 
-bouton_plus = Button(fenetre, text ='+', padx = 15, pady = 15, bg = '#F39D0F', fg = 'white' , bd = 5, command = lambda:bouton1( "+")).grid(column = 4, row = 4)
-bouton_division = Button(fenetre, text ='/', padx = 15, pady = 14, bg = '#F39D0F', fg = 'white' , bd = 5, command = lambda:bouton1( "/")).grid(column = 4, row = 2)
-bouton_moins = Button(fenetre, text ='-', padx = 15, pady = 15, bg = '#F39D0F', fg = 'white' , bd = 5, command = lambda:bouton1( "-")).grid(column = 4, row = 5)
-bouton_multiplier = Button(fenetre, text ='x', padx = 15, pady = 15, bg = '#F39D0F', fg = 'white' , bd = 5, command = lambda:bouton1( "x")).grid(column = 4, row = 3)
-bouton_egale = Button(fenetre, text ='=', padx = 15, pady = 15, bg = '#F39D0F', fg = 'white' , bd = 5, command = lambda:bouton1("=")).grid(column = 4, row = 6)
-bouton_del = Button(fenetre, text = 'DEL', padx = 15, pady = 15, bg = '#F39D0F', fg = 'white', bd = 5, command = lambda:bouton1("del")).grid(column = 5, row = 2)
+bouton_plus = Button(fenetre, text ='+', padx = 15, pady = 15, bg = '#F39D0F', fg = 'white' , bd = 5, command = lambda:bouton( "+")).grid(column = 4, row = 4)
+bouton_division = Button(fenetre, text ='/', padx = 15, pady = 14, bg = '#F39D0F', fg = 'white' , bd = 5, command = lambda:bouton( "/")).grid(column = 4, row = 2)
+bouton_moins = Button(fenetre, text ='-', padx = 15, pady = 15, bg = '#F39D0F', fg = 'white' , bd = 5, command = lambda:bouton( "-")).grid(column = 4, row = 5)
+bouton_multiplier = Button(fenetre, text ='x', padx = 15, pady = 15, bg = '#F39D0F', fg = 'white' , bd = 5, command = lambda:bouton( "x")).grid(column = 4, row = 3)
+bouton_egale = Button(fenetre, text ='=', padx = 15, pady = 15, bg = '#F39D0F', fg = 'white' , bd = 5, command = lambda:bouton("=")).grid(column = 4, row = 6)
+bouton_del = Button(fenetre, text = 'DEL', padx = 15, pady = 15, bg = '#F39D0F', fg = 'white', bd = 5, command = lambda:bouton("del")).grid(column = 5, row = 2)
 
 bouton_virgule = Button(fenetre, text =',', padx = 15, pady = 15, bg = '#F39D0F', fg = 'white' , bd = 5).grid(column = 2, row = 6)
 
-bouton_AC = Button(fenetre, text ='AC', padx = 15, pady = 15, bg = '#756D61', command = lambda:bouton1('AC')).grid(column = 0, row = 2)
-bouton_negatif = Button(fenetre, text ='-/+', padx = 15, pady = 15, bg = '#756D61', command = lambda:bouton1("negatif")).grid(column = 1, row = 2)
+bouton_AC = Button(fenetre, text ='AC', padx = 15, pady = 15, bg = '#756D61', command = lambda:bouton('AC')).grid(column = 0, row = 2)
+bouton_negatif = Button(fenetre, text ='-/+', padx = 15, pady = 15, bg = '#756D61', command = lambda:bouton("negatif")).grid(column = 1, row = 2)
 bouton_pourcent = Button(fenetre, text ='%', padx = 15, pady = 15, bg = '#756D61', command = lambda:pourcentage()).grid(column = 2, row = 2)
 
 bouton_quitter = Button(fenetre, text = "QUIT", padx = 15, pady = 15, bg = '#FFFFFF', command = lambda:quitte()).grid(column = 5, row = 7)
@@ -93,6 +91,8 @@ bouton_change_mode = Button(fenetre, text = 'mode', padx = 15, pady = 15, bg = '
 """
 
 #-------------------------------------------------------FONCTION---------------------------------------------------#
+
+pile_bouton = Pile()    #sert à empiler les nombres tapé avec les boutons de la culculatrice
 
 def syn_verif(pilestr):
     """fonction permettant de vérifier la syntaxe du calcul donné ensuite à la fonctione evalpostfixee"""
@@ -115,11 +115,13 @@ def syn_verif(pilestr):
 def conv_p_s(pile):
     """fonction qui prend une pile en paramètre et renvoie une chaine de caractère
     , elle sert à convertie une pile en chaine de caractère"""
-    str = ""
+    strconv = ""
     while pile.est_vide() != True:
-        str = pile.sommet() + str
+        strconv = pile.sommet() + strconv
         pile.depiler()
-    return str
+    for i in range(len(strconv)):
+        pile_bouton.empiler(strconv[i])
+    return strconv
 
 def quitte():
     """sert à quitter la calculatrice"""
@@ -127,35 +129,45 @@ def quitte():
     return
 
 #--------------------FONCTION POUR BOUTON DIRECT----------------------#
-pile_bouton = Pile()    #sert à empiler les nombres tapé avec les boutons de la culculatrice
 
-def bouton1(strnb):
+def bouton(strnb):
     """fonction qui prend un paramètre un String et renvoie None.
     Elle sert au fonctionnalité des bouton"""
-    global affi
-    if strnb == "del" and len(affi) != 0:#pour le bouton del
-        if affi == "":
+
+    if strnb != "del" and strnb != 'AC' and strnb != "=":
+        pile_bouton.empiler(strnb)
+        barre.set(conv_p_s(pile_bouton))
+        return
+
+    #pour le bouton del
+    if strnb == "del":
+        if pile_bouton.hauteur() == 1:
+            pile_bouton.depiler()
             barre.set("0")
         if pile_bouton.est_vide() == False:
-            sommet = str(pile_bouton.sommet())
-            print(sommet, type(sommet))
-            affi = affi.replace(sommet,"")#ne pas utiliser replace
             pile_bouton.depiler()
-            barre.set(affi)
+            barre.set(conv_p_s(pile_bouton))
+            return
+
+#################
+    if strnb == "%":#pour le bouton pourcentage
+        pile_pourcent = Pile()
+        for i in range(pile_bouton.hauteur()):
+            pile_pourcent.empiler(pile_bouton.depiler())
         return
+
+##################
 
     if strnb == "=" :#pour le bouton égale
         egale(pile_bouton)
         return
 
     if strnb == 'AC':#pour le bouton AC
-        affi = ""
-        barre.set("0")
+        while pile_bouton.est_vide() == False:
+            pile_bouton.depiler()
+        pile_bouton.empiler("0")
+        barre.set(pile_bouton)
         return
-
-    affi = affi + strnb
-    barre.set(affi)
-    pile_bouton.empiler(strnb)
     return
 
 def egale(pile):
@@ -163,14 +175,17 @@ def egale(pile):
     pilestr = conv_p_s(pile)
     if syn_verif(pilestr) == True:
         barre.set(evalpostfixee(pilestr))
-        return
+        while pile_bouton.est_vide() == False:
+            pile_bouton.depiler()
+        pile_bouton.empiler(str(evalpostfixee(pilestr)))
+        return str(evalpostfixee(pilestr))
     else:
         barre.set("Erreur Syntaxe")
         return
 
 fenetre.mainloop()
 
-#quand j'appuie 2 fois sur Ã©gale faut afficher bien pas None
+#quand j'appuie 2 fois sur égale faut afficher bien pas None
 #ajouter le del
 #faire %, ','
 #faire les calcul avec les str avec des espace pour les chiffres plus grand

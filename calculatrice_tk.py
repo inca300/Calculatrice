@@ -15,7 +15,7 @@ def evalpostfixee(exp):
     tabsign = ['x', '-', '+', '/']
     for i in exp:
         if i in tabsign :#si le signe est dans le tableau
-            assert(pile.est_vide() == False),"Votre opération n'est pas formulé correctement\nERREUR !" 
+            assert(pile.est_vide() == False),"Votre opération n'est pas formulé correctement\nERREUR !"
             nb1 = pile.sommet()
             pile.depiler()
             nb2 = pile.sommet()
@@ -79,11 +79,12 @@ bouton_virgule = Button(fenetre, text =',', padx = 15, pady = 15, bg = '#F39D0F'
 
 bouton_AC = Button(fenetre, text ='AC', padx = 15, pady = 15, bg = '#756D61', command = lambda:bouton('AC')).grid(column = 0, row = 2)
 bouton_negatif = Button(fenetre, text ='-/+', padx = 15, pady = 15, bg = '#756D61', command = lambda:bouton("negatif")).grid(column = 1, row = 2)
-bouton_pourcent = Button(fenetre, text ='%', padx = 15, pady = 15, bg = '#756D61', command = lambda:pourcentage()).grid(column = 2, row = 2)
+bouton_pourcent = Button(fenetre, text ='%', padx = 15, pady = 15, bg = '#756D61', command = lambda:bouton("%")).grid(column = 2, row = 2)
 
 bouton_quitter = Button(fenetre, text = "QUIT", padx = 15, pady = 15, bg = '#FFFFFF', command = lambda:quitte()).grid(column = 5, row = 7)
 bouton_change_mode = Button(fenetre, text = 'mode', padx = 15, pady = 15, bg = '#FFFFFF', command = lambda:change_mode()).grid(column = 5, row = 1)
 
+bouton_test = Button(fenetre, text = 'test', padx = 15, pady = 15, bg = '#FFFFFF', command = lambda:conv_p_s(pile_bouton)).grid(column = 5, row = 3)
 
 
 """
@@ -92,9 +93,10 @@ bouton_change_mode = Button(fenetre, text = 'mode', padx = 15, pady = 15, bg = '
 
 #-------------------------------------------------------FONCTION---------------------------------------------------#
 
-pile_bouton = Pile()    #sert à empiler les nombres tapé avec les boutons de la culculatrice
+pile_bouton = Pile()    #sert à empiler les nombres tapé avec les boutons de la culculatrice puis on convertie la pile en str et on l'affiche a l'aide de barre.set()
 
 def syn_verif(pilestr):
+    """pour l'amélioration il faudra isoler les nombres pour que dans le tabnb ils apparaissent comme 1seul élément"""
     """fonction permettant de vérifier la syntaxe du calcul donné ensuite à la fonctione evalpostfixee"""
     tabnb = []
     tabsin = []
@@ -141,22 +143,22 @@ def bouton(strnb):
 
     #pour le bouton del
     if strnb == "del":
-        if pile_bouton.hauteur() == 1:
+        if pile_bouton.hauteur() <= 1:
             pile_bouton.depiler()
             barre.set("0")
-        if pile_bouton.est_vide() == False:
+        if pile_bouton.hauteur() > 1:
             pile_bouton.depiler()
             barre.set(conv_p_s(pile_bouton))
-            return
+        return
 
-#################
+########################################################
     if strnb == "%":#pour le bouton pourcentage
         pile_pourcent = Pile()
         for i in range(pile_bouton.hauteur()):
             pile_pourcent.empiler(pile_bouton.depiler())
         return
 
-##################
+########################################################"
 
     if strnb == "=" :#pour le bouton égale
         egale(pile_bouton)
@@ -174,19 +176,20 @@ def egale(pile):
     """fonction qui prend un paramètre une pile et qui renvoie None """
     pilestr = conv_p_s(pile)
     if syn_verif(pilestr) == True:
-        barre.set(evalpostfixee(pilestr))
+        barre.set(evalpostfixee(pilestr))#########
         while pile_bouton.est_vide() == False:
             pile_bouton.depiler()
         pile_bouton.empiler(str(evalpostfixee(pilestr)))
-        return str(evalpostfixee(pilestr))
+        return str(evalpostfixee(pilestr))########
     else:
         barre.set("Erreur Syntaxe")
         return
 
 fenetre.mainloop()
 
-#quand j'appuie 2 fois sur égale faut afficher bien pas None
+#quand j'appuie 2 fois sur Ã©gale faut afficher bien pas None
 #ajouter le del
 #faire %, ','
 #faire les calcul avec les str avec des espace pour les chiffres plus grand
-#faire une fonction convertir
+#ajouter la pavé numérique*
+

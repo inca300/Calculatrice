@@ -38,15 +38,12 @@ class Pile :
 
 #-------------Ajoute de méthode-----------------#
     def hauteur(self):
-        Q = Pile()
-        n = 0
-        while not(self.est_vide()):
-            n += 1
-            x = self.depiler()
-            Q.empiler(x)
-        while not(Q.est_vide()):
-            x = Q.depiler()
-            self.empiler(x)
-        return n
-
+        tab = []
+        while self.est_vide() == False:
+            tab.append(self.sommet())
+            self.depiler()
+        tab.reverse()
+        for i in tab:
+            self.empiler(i)
+        return len(tab)
 

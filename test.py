@@ -1,60 +1,52 @@
 from Pile import Pile
 
-def evalpostfixee(exp):
+def pile_tri(pile_a_trier):
+    """fonction qui permet de séparer les chiffres et de les fusionner afin d'en avoir seulement deux pour une opération"""
+    #ple_a_trier = conv_p_s(pile_a_trier)
+    stock = ""
+    tabsin = ["+","-","x","/"]
+    tabsigne = []
+    piletri = Pile()
+    for i in pile_a_trier:
+        if i.isnumeric() == True:
+            stock += i
+        if i == " " or i in tabsin:
+            piletri.empiler(stock)
+            stock = ""
+        if i in tabsin:
+            tabsigne.append(i)
+    for j in range(len(tabsigne)):
+        piletri.empiler(tabsigne[j])
+    return piletri
 
-    """fonction qui prend en paramètre une chaine de caratère
-    et qui renvoie le sommet d'une pile qui représente le résultat du calcul
-    de la chaine de caractère"""
+def syn_verif(chaine):#dit pouvoir verifier qu'il n'y a que des chiffre ou des espaces(pas deux cote a cote)
+    tabnb = []
+    tabsin = []
+    signe = ["+","-","x","/"]
 
-    assert(type(exp) == str),"erreur la variable str n'est pas une chaine de caractère"
-
-    pile = Pile()
-    tabsign = ['x', '-', '+', '/']
-    for i in exp:
-        if i in tabsign :#si le signe est dans le tableau
-            assert(pile.est_vide() == False),"Votre opération n'est pas formulé correctement\nERREUR !"
-            if pile.sommet() == "_":
-                pile.depiler()
-                nb1 = pile.sommet()
-            else:
-                nb1 = pile.sommet()
-                pile.depiler()
-            if pile.sommet() == "_":
-                pile.depiler()
-                nb2 = pile.sommet()
-            else:
-                nb2 = pile.sommet()
-                pile.depiler()
-            if i == 'x':
-                calcul = int(nb1) * int(nb2)
-                pile.empiler(calcul)
-            if i == '+':
-                calcul = int(nb1) + int(nb2)
-                pile.empiler(calcul)
-            if i == '-':
-                calcul = int(nb2) - int(nb1)
-                pile.empiler(calcul)
-            if i== '/':
-                calcul = int(nb2) / int(nb1)
-                pile.empiler(calcul)
+    for i in chaine.lst:
+        if i in signe:
+            tabsin.append(i)
+        if i not in tabsin and i != " ":
+            tabnb.append(i)
+    print(tabnb, tabsin)
+    if len(tabnb) == len(tabsin) or len(tabnb) < len(tabsin):#si il y a autant de chiffre que de signe alors la syntaxe est incorrect ou si il y a plus de nombre que de signe il faudra vérifier si elle n'en comporte pas trop
+        #barre.set("Erreur Syntaxe")
+        return False
+    else:
+        if len(tabnb) > len(tabsin) and len(tabnb)-1 == len(tabsin):#regarde si il y a le nombre exact de nombre par rapport au singe exemple: 33+, 2 nb 2-1 = 1 = le nombre de signe
+            return True
         else:
-            reste = pile.sommet()
-            if i != " ":
-                pile.empiler(i)
-            else:
-                while reste != "vide" or reste != " " or reste != "_":
-                    stock1 = pile.sommet()
-                    pile.depiler()
-                    stock2 = pile.sommet()
-                    print("i =",i,"\n","pile =",pile,"\n","sommet =",pile.sommet(),"\n","stock :",stock1, stock2)
-                    pile.depiler()
-                    reste = pile.sommet()
-                    pile.empiler(stock2 + stock1)
-                pile.empiler("_")
-                reste = pile.sommet()
-    return pile.sommet()
+            #barre.set("Erreur Syntaxe")
+            return False
 
-assert(evalpostfixee("123 45 +") == "168"),"erreur"
+test = Pile()
+test.empiler("1")
+test.empiler("2")
+test.empiler("8")
+test.empiler(" ")
+test.empiler("7")
+test.empiler("2")
+test.empiler("+")
 
-#problème car il prend en compte le _ et fusionne 123_45 donc
-#impossible de faire le calcule de plus je prend en compte le _ durant la phrase de calcule
+syn_verif(pile_tri("128 72+"))

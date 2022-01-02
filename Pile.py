@@ -20,7 +20,8 @@ class Pile :
 
     def depiler(self):
         assert(self.lst != []),'erreur'
-        self.lst.pop()
+        return self.lst.pop()
+
 
     def __str__(self): #__repr__
         self.str = ""
@@ -46,4 +47,3 @@ class Pile :
         for i in tab:
             self.empiler(i)
         return len(tab)
-

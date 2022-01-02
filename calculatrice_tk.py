@@ -2,10 +2,15 @@
 
 #-----------------------IMPORTATION------------------------#
 from tkinter import *
+from tkinter import ttk
 from Pile import Pile
+from calcul import calcul
 
-#------------------------------FONCTION DE CALCUL-----------------------------------------------------#
+#region global variables
 
+#endregion
+
+#region calcul function
 def evalpostfixee(exp):
     """fonction qui prend en paramètre une chaine de caratère
     et qui renvoie le sommet d'une pile qui représente le résultat du calcul
@@ -35,22 +40,22 @@ def evalpostfixee(exp):
         else:
             pile.empiler(int(i))
     return pile.sommet()
+#endregion
 
-#-------------------CREATION DE LA FENETRE -------------------------------#
-
+#region windows init
 fenetre = Tk()
-fenetre.geometry("300x400")
+#fenetre.geometry("300x400")
 fenetre.configure(bg = ('black'))
+#endregion
 
-#-----------------------CREATION DE LA BARRE D'AFFICHAGE-------------------------#
-
+#region affichage
 affi = ""               #variable qui sert à l'affichage dans la barre d'affichage
 barre = StringVar()
 barre.set("0")
 reglagebarre = Entry(bg = 'black', fg = 'yellow' , bd = 3,font = ('arial', 15,'bold') , textvariable = barre, selectborderwidth = 1, insertwidth = 1, justify = 'right').grid(columnspan = 5, row = 0, rowspan = 2) #reglage de la barre d'affichage des calculs
+#endregion
 
-#--------------------BOUTON CHIFFRE--------------------#
-
+#region buttons numbers
 bouton7 = Button(fenetre, text ='7', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "7")).grid(column = 0, row = 3)
 bouton4 = Button(fenetre, text ='4', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "4")).grid(column = 0, row = 4)
 bouton1 = Button(fenetre, text ='1', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "1")).grid(column = 0, row = 5)
@@ -63,9 +68,9 @@ bouton2 = Button(fenetre, text ='2', padx = 20, pady = 20, bg = '#312C2C', fg = 
 bouton9 = Button(fenetre, text ='9', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "9")).grid(column = 2, row = 3)
 bouton6 = Button(fenetre, text ='6', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "6")).grid(column = 2, row = 4)
 bouton3 = Button(fenetre, text ='3', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "3")).grid(column = 2, row = 5)
+#endregion
 
-#-------------------BOUTON SIGNE-----------------------#
-
+#region buttons symbols
 """padx et pady ce sont les dimension des bouton, text c'est le texte qu'il affiche, bg c'est beackground, fg c'est forground, bd c'est bordure, command c'est pour
 lancer une command en appuyant sur le bouton et le lambda sert a ne pas lancer la fonction des le lancement du programme,
  le .grid sert à situer le bouton sur des colones et des ligne(row) pour préciser columnspan et rowpsan sert a fusionner les cases"""
@@ -84,18 +89,16 @@ bouton_negatif = Button(fenetre, text ='-/+', padx = 15, pady = 15, bg = '#756D6
 bouton_pourcent = Button(fenetre, text ='%', padx = 15, pady = 15, bg = '#756D61', command = lambda:pourcentage()).grid(column = 2, row = 2)
 
 bouton_quitter = Button(fenetre, text = "QUIT", padx = 15, pady = 15, bg = '#FFFFFF', command = lambda:quitte()).grid(column = 5, row = 7)
-bouton_change_mode = Button(fenetre, text = 'mode', padx = 15, pady = 15, bg = '#FFFFFF', command = lambda:change_mode()).grid(column = 5, row = 1)
-
 
 
 """
 #padx , pady , bd , fg , font = ('police', taille, bold / not bold) , text , bg = couleur fond de case avec # , activeforeground couleur du_ texte quand je click, activebackground c'est couleur de la case quand je click, command = lambda: unefonction
 """
+#endregion
 
-#-------------------------------------------------------FONCTION---------------------------------------------------#
-
+#region functions
 def syn_verif(pilestr):
-    """fonction permettant de vérifier la syntaxe du calcul donné ensuite à la fonctione evalpostfixee"""
+    """fonction permettant de vérifier la syntaxe du calcul donné ensuite à la fonction evalpostfixee"""
     tabnb = []
     tabsin = []
     for i in pilestr:
@@ -124,9 +127,12 @@ def conv_p_s(pile):
 def quitte():
     """sert à quitter la calculatrice"""
     fenetre.destroy()
+    print(pile_bouton.lst)
     return
 
-#--------------------FONCTION POUR BOUTON DIRECT----------------------#
+
+#endregion
+#region functions buttons
 pile_bouton = Pile()    #sert à empiler les nombres tapé avec les boutons de la culculatrice
 
 def bouton1(strnb):
@@ -145,7 +151,7 @@ def bouton1(strnb):
         return
 
     if strnb == "=" :#pour le bouton égale
-        egale(pile_bouton)
+        egale(pile_bouton, affi)
         return
 
     if strnb == 'AC':#pour le bouton AC
@@ -158,16 +164,42 @@ def bouton1(strnb):
     pile_bouton.empiler(strnb)
     return
 
-def egale(pile):
+def egale(pile, affi):
     """fonction qui prend un paramètre une pile et qui renvoie None """
     pilestr = conv_p_s(pile)
-    if syn_verif(pilestr) == True:
+    if syn_verif(pilestr) == True and mode == "polo":
         barre.set(evalpostfixee(pilestr))
+        print(pile)
+        return
+    elif syn_verif(pilestr) and mode == "normal":
+        print(calcul(pile))
         return
     else:
         barre.set("Erreur Syntaxe")
         return
 
+
+def choix_mode(event):
+    global mode
+    if bouton_change_mode.get() == 'polo':
+        mode = 'polo'
+    elif bouton_change_mode.get() == 'normal':
+        mode = 'normal'
+
+def switch_mode():
+    pass
+
+#Choix du mode de la calculatrice
+actual_mode = StringVar()
+bouton_change_mode = ttk.Combobox(fenetre, textvariable = actual_mode)
+bouton_change_mode.grid(column = 5, row = 1)
+bouton_change_mode['values'] = ('Choisir le mode', 'polo', 'normal')
+bouton_change_mode.current(0)
+bouton_change_mode.bind('<<ComboboxSelected>>', choix_mode)
+
+
+
+#endregion
 fenetre.mainloop()
 
 #quand j'appuie 2 fois sur Ã©gale faut afficher bien pas None
@@ -175,3 +207,4 @@ fenetre.mainloop()
 #faire %, ','
 #faire les calcul avec les str avec des espace pour les chiffres plus grand
 #faire une fonction convertir
+#FAIRE UN PACMAN C<

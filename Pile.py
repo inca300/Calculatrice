@@ -20,7 +20,8 @@ class Pile :
 
     def depiler(self):
         assert(self.lst != []),'erreur'
-        self.lst.pop()
+        return self.lst.pop()
+
 
     def __str__(self): #__repr__
         self.str = ""
@@ -35,3 +36,14 @@ class Pile :
         for i in range(len(self.lst)):
             self.str =   str(self.str) + str('|') + str(self.lst[-1-i]) + str('|') + str('\n')
         return str(self.str)
+
+#-------------Ajoute de méthode-----------------#
+    def hauteur(self):
+        tab = []
+        while self.est_vide() == False:
+            tab.append(self.sommet())
+            self.depiler()
+        tab.reverse()
+        for i in tab:
+            self.empiler(i)
+        return len(tab)

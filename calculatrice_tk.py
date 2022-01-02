@@ -12,33 +12,40 @@ from calcul import calcul
 
 #region calcul function
 def evalpostfixee(exp):
+
     """fonction qui prend en paramètre une chaine de caratère
-    et qui renvoie le sommet d'une pile qui représente le résultat du calcul
-    de la chaine de caractère"""
-    assert(type(exp) == str),"erreur la variable str n'est pas une chaine de caractère"
-    pile = Pile()
+     de la chaine de caractère"""
+
+    pile = pile_tri(exp)#pile qui receptionne les chiffres
+    assert(syn_verif(pile) == True),"erreur vous avez mal formulé le calcul"
+
+    exp = conv_p_s(exp)
     tabsign = ['x', '-', '+', '/']
     for i in exp:
         if i in tabsign :#si le signe est dans le tableau
-            assert(pile.est_vide() == False),messagebox.showerror ( title = "Erreur" , message = "Votre opération n'est pas formulé correctement\nERREUR !" )
-            nb1 = pile.sommet()
-            pile.depiler()
-            nb2 = pile.sommet()
-            pile.depiler()
+            nb1 = pile.lst[0]
+            nb2 = pile.lst[1]
+            if nb1.isnumeric() == False:
+                nb1 = float(nb1)
+            else:
+                nb1 = int(nb1)
+            if nb2.isnumeric() == False:
+                nb2 = float(nb2)
+            else:
+                nb2 = int(nb2)
+            #--------------opération-----------------#
             if i == 'x':
                 calcul = nb1 * nb2
-                pile.empiler(calcul)
+                pile.empiler(str(calcul))
             if i == '+':
                 calcul = nb1 + nb2
-                pile.empiler(calcul)
+                pile.empiler(str(calcul))
             if i == '-':
                 calcul = nb2 - nb1
-                pile.empiler(calcul)
-            if i== '/':
+                pile.empiler(str(calcul))
+            if i == '/':
                 calcul = nb2 / nb1
-                pile.empiler(calcul)
-        else:
-            pile.empiler(int(i))
+                pile.empiler(str(calcul))
     return pile.sommet()
 #endregion
 
@@ -61,9 +68,10 @@ bouton4 = Button(fenetre, text ='4', padx = 20, pady = 20, bg = '#312C2C', fg = 
 bouton1 = Button(fenetre, text ='1', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "1")).grid(column = 0, row = 5)
 bouton0 = Button(fenetre, text ='0', padx = 51, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "0")).grid(column = 0, row = 6, columnspan = 2)
 
-bouton8 = Button(fenetre, text ='8', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "8")).grid(column = 1, row = 3)
-bouton5 = Button(fenetre, text ='5', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "5")).grid(column = 1, row = 4)
-bouton2 = Button(fenetre, text ='2', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "2")).grid(column = 1, row = 5)
+bouton0 = Button(fenetre, text ='0', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton( "0")).grid(column = 1, row = 6)
+bouton8 = Button(fenetre, text ='8', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton( "8")).grid(column = 1, row = 3)
+bouton5 = Button(fenetre, text ='5', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton( "5")).grid(column = 1, row = 4)
+bouton2 = Button(fenetre, text ='2', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton( "2")).grid(column = 1, row = 5)
 
 bouton9 = Button(fenetre, text ='9', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "9")).grid(column = 2, row = 3)
 bouton6 = Button(fenetre, text ='6', padx = 20, pady = 20, bg = '#312C2C', fg = 'white' , bd = 5, command = lambda:bouton1( "6")).grid(column = 2, row = 4)
@@ -138,30 +146,67 @@ pile_bouton = Pile()    #sert à empiler les nombres tapé avec les boutons de l
 def bouton1(strnb):
     """fonction qui prend un paramètre un String et renvoie None.
     Elle sert au fonctionnalité des bouton"""
-    global affi
-    if strnb == "del" and len(affi) != 0:#pour le bouton del
-        if affi == "":
-            barre.set("0")
-        if pile_bouton.est_vide() == False:
-            sommet = str(pile_bouton.sommet())
-            print(sommet, type(sommet))
-            affi = affi.replace(sommet,"")#ne pas utiliser replace
+    tabsigne = ["+","-","/","x"]
+#----------------------------BOUTON signe------------------------------#
+    if strnb in tabsigne :
+        pile_bouton.empiler(strnb)
+        barre.set(conv_p_s(pile_bouton))
+        return
+#---------------------------------------------------------------------#
+#--------------------------Pour les nombres---------------------------#
+    if strnb.isnumeric() == True:
+        pile_bouton.empiler(strnb)
+        barre.set(conv_p_s(pile_bouton))
+        return
+#---------------------------------------------------------------------#
+#---------------------------BOUTON ESPACE-----------------------------#
+    if strnb == " ":
+        pile_bouton.empiler(strnb)
+        barre.set(conv_p_s(pile_bouton))
+        return
+#---------------------------------------------------------------------#
+#------------------------------BOUTON DEL-----------------------------#
+    if strnb == "del":
+        if pile_bouton.hauteur() <= 1:
             pile_bouton.depiler()
-            barre.set(affi)
+            barre.set("0")
+        if pile_bouton.hauteur() > 1:
+            pile_bouton.depiler()
+            barre.set(conv_p_s(pile_bouton))
         return
 
     if strnb == "=" :#pour le bouton égale
         egale(pile_bouton, affi)
         return
-
-    if strnb == 'AC':#pour le bouton AC
-        affi = ""
+#---------------------------------------------------------------------#
+#-----------------------------BOUTON AC-------------------------------#
+    if strnb == 'AC':
+        while pile_bouton.est_vide() == False:
+            pile_bouton.depiler()
+        pile_bouton.empiler("")
         barre.set("0")
         return
-
-    affi = affi + strnb
-    barre.set(affi)
-    pile_bouton.empiler(strnb)
+#---------------------------------------------------------------------#
+#-------------------------------BOUTON %------------------------------#
+    if strnb == "pourcent":
+        pile_bouton.empiler("%")
+        barre.set(conv_p_s(pile_bouton))
+        pile_bouton.depiler()
+        pilecopie = conv_p_s(pile_bouton)
+        for j in range(pile_bouton.hauteur()):
+            pile_bouton.depiler()
+        pile_bouton.empiler("100 ")
+        for elem in pilecopie:
+            pile_bouton.empiler(elem)
+        pile_bouton.empiler("/")
+        return
+#---------------------------------------------------------------------#
+#---------------------------BOUTON VIRGULE----------------------------#
+    if strnb == ",":
+        pile_bouton.empiler(".")
+        barre.set(conv_p_s(pile_bouton))
+        return
+#---------------------------------------------------------------------#
     return
 
 def egale(pile, affi):
@@ -177,6 +222,8 @@ def egale(pile, affi):
     else:
         barre.set("Erreur Syntaxe")
         return
+#---------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------------------#
 
 
 def choix_mode(event):
